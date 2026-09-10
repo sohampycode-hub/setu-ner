@@ -3,25 +3,138 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --gov-navy: #0e2a47;
+  --gov-blue: #0b4f8a;
+  --gov-accent: #ff9933;
+  --gov-green: #138808;
+  --gov-bg: #f8fafc;
+  --gov-border: #cbd5e1;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--gov-bg);
+  color: #1e293b;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  border-radius: 0.25rem;
+}
+
+.leaflet-container path:focus,
+.leaflet-container svg:focus,
+.leaflet-interactive:focus,
+.leaflet-interactive:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* GIGW High Contrast Mode (Accessible Dark/Gold Theme) */
+html.gov-high-contrast {
+  filter: contrast(115%);
+}
+
+html.gov-high-contrast body {
+  background-color: #000000 !important;
+  color: #ffff00 !important;
+}
+
+html.gov-high-contrast main,
+html.gov-high-contrast header,
+html.gov-high-contrast footer,
+html.gov-high-contrast .bg-white,
+html.gov-high-contrast .bg-slate-50,
+html.gov-high-contrast .bg-slate-100 {
+  background-color: #000000 !important;
+  color: #ffff00 !important;
+  border-color: #ffff00 !important;
+}
+
+html.gov-high-contrast table,
+html.gov-high-contrast th,
+html.gov-high-contrast td {
+  border-color: #ffff00 !important;
+  color: #ffffff !important;
+}
+
+html.gov-high-contrast button {
+  border: 1px solid #ffff00 !important;
+}
+
+/* Strict Clean Print Engine */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 6mm 8mm;
   }
+
+  /* Reset document background & overflow */
+  html, body {
+    height: auto !important;
+    min-height: 0 !important;
+    background: #ffffff !important;
+    overflow: visible !important;
+  }
+
+  /* Hide background interface controls, map canvas, and non-print dialogs */
+  header,
+  .leaflet-container,
+  .print\\:hidden,
+  [class*="print:hidden"] {
+    display: none !important;
+  }
+
+  /* Neutralize main container constraints so only the printable element formats */
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+  }
+
+  /* Isolate printable document container */
+  #printable-manifest {
+    display: block !important;
+    visibility: visible !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  tr, .grid {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+}
+
+/* Tactical Hazard Radar Wave Keyframes */
+@keyframes radar-pulse {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.9;
+  }
+  70% {
+    transform: scale(2.4);
+    opacity: 0.15;
+  }
+  100% {
+    transform: scale(2.8);
+    opacity: 0;
+  }
+}
+
+.radar-ping-ring {
+  animation: radar-pulse 2.2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+.radar-ping-delayed {
+  animation: radar-pulse 2.2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+  animation-delay: 1.1s;
 }
