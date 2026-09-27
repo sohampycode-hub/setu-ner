@@ -62,23 +62,115 @@ Hosting: Vercel Edge Network
 
 📂 Project Repository Structure
 Plaintext
-├── public/                 # Static assets, GeoJSON district boundaries, SVG icons
-├── src/
-│   ├── app/                # Next.js 15 App Router pages & API handlers
-│   │   ├── api/            # Serverless endpoints for incidents, gating, machinery
-│   │   ├── officer/        # Field Patrol & Incident Inspection Desk
-│   │   ├── dlo/            # District Logistics Officer machinery requisition desk
-│   │   ├── apex/           # Strategic Ministry oversight & SLA monitor
-│   │   ├── verify-manifest/# Public unauthenticated QR audit portal
-│   │   └── page.tsx        # Dynamic GIS Citizen & Convoy Radar
-│   ├── components/         # Leaflet Map, Gating Modals, Telemetry HUDs
-│   ├── lib/                # Supabase client, PostGIS helpers, Offline cache managers
-│   └── types/              # TypeScript database schemas and manifest payloads
-├── supabase/
-│   ├── migrations/         # PostgreSQL DDL, PostGIS spatial indices & RLS policies
-│   └── seed.sql            # Initial NER highway vectors and seed district fixtures
-├── .env.example            # Template for environment variables
-└── README.md
+```
+logixhub
+├─ .eslintrc.json
+├─ jsconfig.json
+├─ LICENSE
+├─ next.config.mjs
+├─ package-lock.json
+├─ package.json
+├─ postcss.config.mjs
+├─ README.md
+├─ src
+│  ├─ app
+│  │  ├─ admin
+│  │  │  ├─ dashboard
+│  │  │  │  └─ page.js
+│  │  │  └─ login
+│  │  │     └─ page.js
+│  │  ├─ api
+│  │  │  ├─ admin
+│  │  │  │  ├─ approvals
+│  │  │  │  │  └─ route.js
+│  │  │  │  ├─ district-roads
+│  │  │  │  │  └─ route.js
+│  │  │  │  ├─ provision-officer
+│  │  │  │  │  └─ route.js
+│  │  │  │  └─ requisitions
+│  │  │  │     └─ route.js
+│  │  │  ├─ analytics
+│  │  │  │  └─ district
+│  │  │  │     └─ route.js
+│  │  │  ├─ districts
+│  │  │  │  └─ list
+│  │  │  │     └─ route.js
+│  │  │  ├─ incidents
+│  │  │  │  └─ route.js
+│  │  │  ├─ ingest
+│  │  │  │  ├─ district-exact
+│  │  │  │  │  └─ route.js
+│  │  │  │  ├─ districts
+│  │  │  │  │  └─ route.js
+│  │  │  │  ├─ highways
+│  │  │  │  │  └─ route.js
+│  │  │  │  └─ roads
+│  │  │  │     ├─ refresh-weather
+│  │  │  │     │  └─ route.js
+│  │  │  │     └─ route.js
+│  │  │  ├─ manifests
+│  │  │  │  └─ route.js
+│  │  │  ├─ risk
+│  │  │  │  └─ evaluate
+│  │  │  │     └─ route.js
+│  │  │  ├─ risk-assessment
+│  │  │  │  └─ route.js
+│  │  │  ├─ routing
+│  │  │  │  └─ navigate
+│  │  │  │     └─ route.js
+│  │  │  └─ seed-users
+│  │  │     └─ route.js
+│  │  ├─ auth
+│  │  │  ├─ dlo-login
+│  │  │  │  └─ page.js
+│  │  │  ├─ login
+│  │  │  │  └─ page.js
+│  │  │  ├─ officer-login
+│  │  │  │  └─ page.js
+│  │  │  └─ page.js
+│  │  ├─ dashboard
+│  │  │  ├─ admin
+│  │  │  │  └─ page.js
+│  │  │  ├─ dlo
+│  │  │  │  └─ page.js
+│  │  │  └─ field
+│  │  │     └─ page.js
+│  │  ├─ dlo
+│  │  │  └─ dashboard
+│  │  │     └─ page.js
+│  │  ├─ favicon.ico
+│  │  ├─ fonts
+│  │  │  ├─ GeistMonoVF.woff
+│  │  │  └─ GeistVF.woff
+│  │  ├─ globals.css
+│  │  ├─ layout.js
+│  │  ├─ officer
+│  │  │  └─ dashboard
+│  │  │     └─ page.js
+│  │  ├─ page.js
+│  │  └─ verify-manifest
+│  │     └─ page.js
+│  ├─ components
+│  │  ├─ DistrictMap.js
+│  │  ├─ emblems
+│  │  │  └─ NationalEmblem.js
+│  │  ├─ GisMap.js
+│  │  ├─ GovBanner.js
+│  │  ├─ GovFooter.js
+│  │  ├─ GovHeader.js
+│  │  ├─ LocationPickerMap.js
+│  │  ├─ ManifestArchiveModal.js
+│  │  ├─ Navbar.js
+│  │  ├─ OfficerManifestArchiveModal.js
+│  │  ├─ RiskEngineSync.js
+│  │  └─ TransitManifestModal.js
+│  ├─ middleware.js
+│  └─ utils
+│     ├─ audioAlert.js
+│     ├─ auth.js
+│     ├─ offlineQueue.js
+│     └─ supabase.js
+└─ tailwind.config.js
 
 ```
 
