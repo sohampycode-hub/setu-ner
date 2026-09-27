@@ -38,31 +38,31 @@ Arterial highways across the North Eastern Region (NER)—such as the vital Sili
 [ External Telemetry: Open-Meteo API | OSM Overpass Highway Vectors | NDMA Directives ]
                                    │
                                    ▼
-[ Next.js 15 Edge App Router & API Handlers (/api/incidents, /api/gating, /api/machinery) ]
+[ Next.js 15 Edge App Router & API Handlers (/api/incidents, /api/risk, /api/manifests) ]
                                    │
            ┌───────────────────────┴───────────────────────┐
            ▼                                               ▼
 [ Core Intelligence Gating Engine ]              [ Client-Side Resilience Engine ]
-  • Deterministic Spatial Intersect                • Leaflet GIS Vector Canvas
-  • Restoral SLA Dynamic Calculator                • LocalStorage / IndexedDB Vector Cache
+  • Deterministic Spatial Intersect                • Leaflet GIS Vector Canvas (GisMap.js)
+  • Dynamic Route Risk Evaluator                   • Offline Storage Queue (offlineQueue.js)
   • Single-DLO Relational Invariant                • Cryptographic QR Signer & Decoder
            │
            ▼
 [ Supabase PostgreSQL 15 + PostGIS Spatial Engine (CDC Realtime Pub/Sub) ]
 
-Frontend: Next.js 15 (App Router), React 19, Tailwind CSS, Lucide React, Leaflet GIS[cite: 2]
-
-Backend: Next.js Serverless API Handlers, PostgreSQL 15, PostGIS Spatial Extensions[cite: 2]
-
-Realtime Protocol: Supabase Realtime CDC (Change Data Capture over WebSockets)[cite: 2]
-
-Geospatial Processing: PostGIS ST_Intersects, ST_Buffer, GeoJSON Polygonal Boundaries[cite: 2]
-
-Hosting: Vercel Edge Network
-
-📂 Project Repository Structure
-Plaintext
 ```
+
+* **Frontend:** Next.js 15 (App Router), React 19, Tailwind CSS, Leaflet GIS
+* **Backend:** Next.js Serverless API Handlers, PostgreSQL 15, PostGIS Spatial Extensions
+* **Realtime Protocol:** Supabase Realtime CDC (Change Data Capture over WebSockets)
+* **Geospatial Processing:** PostGIS `ST_Intersects`, `ST_Buffer`, GeoJSON District & Corridor Geometries
+* **Hosting:** Vercel Edge Network
+
+---
+
+## 📂 Project Repository Structure
+
+```text
 logixhub
 ├─ .eslintrc.json
 ├─ jsconfig.json
@@ -76,157 +76,146 @@ logixhub
 │  ├─ app
 │  │  ├─ admin
 │  │  │  ├─ dashboard
-│  │  │  │  └─ page.js
+│  │  │  │  └─ page.js              # Ministry Apex / Administrative oversight & SLAs
 │  │  │  └─ login
-│  │  │     └─ page.js
+│  │  │     └─ page.js              # Administrative authentication desk
 │  │  ├─ api
 │  │  │  ├─ admin
-│  │  │  │  ├─ approvals
-│  │  │  │  │  └─ route.js
-│  │  │  │  ├─ district-roads
-│  │  │  │  │  └─ route.js
-│  │  │  │  ├─ provision-officer
-│  │  │  │  │  └─ route.js
-│  │  │  │  └─ requisitions
-│  │  │  │     └─ route.js
+│  │  │  │  ├─ approvals            # Apex corridor & administrative approval pipeline
+│  │  │  │  ├─ district-roads       # District-level road state APIs
+│  │  │  │  ├─ provision-officer    # Field sentry & officer credential provisioning
+│  │  │  │  └─ requisitions         # Inter-district heavy asset allocation endpoints
 │  │  │  ├─ analytics
-│  │  │  │  └─ district
-│  │  │  │     └─ route.js
+│  │  │  │  └─ district             # District-specific spatial risk analytics
 │  │  │  ├─ districts
-│  │  │  │  └─ list
-│  │  │  │     └─ route.js
-│  │  │  ├─ incidents
-│  │  │  │  └─ route.js
+│  │  │  │  └─ list                 # North Eastern district registry & boundaries
+│  │  │  ├─ incidents               # Real-time incident reporting & lifecycle CRUD
 │  │  │  ├─ ingest
-│  │  │  │  ├─ district-exact
-│  │  │  │  │  └─ route.js
-│  │  │  │  ├─ districts
-│  │  │  │  │  └─ route.js
-│  │  │  │  ├─ highways
-│  │  │  │  │  └─ route.js
+│  │  │  │  ├─ district-exact       # High-precision territorial ingest
+│  │  │  │  ├─ districts            # Boundary shapefile & GeoJSON ingestion
+│  │  │  │  ├─ highways             # OSM Overpass national highway vector ingestion
 │  │  │  │  └─ roads
-│  │  │  │     ├─ refresh-weather
-│  │  │  │     │  └─ route.js
-│  │  │  │     └─ route.js
-│  │  │  ├─ manifests
-│  │  │  │  └─ route.js
+│  │  │  │     ├─ refresh-weather   # Open-Meteo real-time atmospheric sync
+│  │  │  │     └─ route.js          # Road segment status & geometry queries
+│  │  │  ├─ manifests               # Dynamic cryptographic transit manifest issuance
 │  │  │  ├─ risk
-│  │  │  │  └─ evaluate
-│  │  │  │     └─ route.js
-│  │  │  ├─ risk-assessment
-│  │  │  │  └─ route.js
+│  │  │  │  └─ evaluate             # Dynamic corridor risk calculation engine
+│  │  │  ├─ risk-assessment         # Geodetic threat scoring & slope stability
 │  │  │  ├─ routing
-│  │  │  │  └─ navigate
-│  │  │  │     └─ route.js
-│  │  │  └─ seed-users
-│  │  │     └─ route.js
+│  │  │  │  └─ navigate             # Gated spatial pathfinding & detour logic
+│  │  │  └─ seed-users              # Initial RBAC fixture bootstrapping
 │  │  ├─ auth
-│  │  │  ├─ dlo-login
-│  │  │  │  └─ page.js
-│  │  │  ├─ login
-│  │  │  │  └─ page.js
-│  │  │  ├─ officer-login
-│  │  │  │  └─ page.js
-│  │  │  └─ page.js
+│  │  │  ├─ dlo-login               # District Logistics Officer authentication
+│  │  │  ├─ login                   # Unified role-based access portal
+│  │  │  ├─ officer-login           # Sentry / Field Patrol login portal
+│  │  │  └─ page.js                 # Authentication directory index
 │  │  ├─ dashboard
-│  │  │  ├─ admin
-│  │  │  │  └─ page.js
-│  │  │  ├─ dlo
-│  │  │  │  └─ page.js
-│  │  │  └─ field
-│  │  │     └─ page.js
+│  │  │  ├─ admin                   # Ministry Apex Strategic Console
+│  │  │  ├─ dlo                     # District Logistics Officer machinery desk
+│  │  │  └─ field                   # Field Patrol inspection dashboard
 │  │  ├─ dlo
-│  │  │  └─ dashboard
-│  │  │     └─ page.js
-│  │  ├─ favicon.ico
-│  │  ├─ fonts
-│  │  │  ├─ GeistMonoVF.woff
-│  │  │  └─ GeistVF.woff
-│  │  ├─ globals.css
-│  │  ├─ layout.js
+│  │  │  └─ dashboard               # Direct DLO corridor restoral & stockpile desk
 │  │  ├─ officer
-│  │  │  └─ dashboard
-│  │  │     └─ page.js
-│  │  ├─ page.js
-│  │  └─ verify-manifest
-│  │     └─ page.js
+│  │  │  └─ dashboard               # Ground verification & sentry route gating
+│  │  ├─ verify-manifest            # Public unauthenticated sentry QR checkpost portal
+│  │  ├─ layout.js                  # Root application layout & Gov header/footer wrappers
+│  │  ├─ page.js                    # Live GIS Radar, highway polylines & citizen portal
+│  │  ├─ globals.css                # Global styles & Tailwind CSS utility layers
+│  │  └─ favicon.ico                # Platform browser icon
 │  ├─ components
-│  │  ├─ DistrictMap.js
+│  │  ├─ DistrictMap.js             # Focused district territorial GIS component
 │  │  ├─ emblems
-│  │  │  └─ NationalEmblem.js
-│  │  ├─ GisMap.js
-│  │  ├─ GovBanner.js
-│  │  ├─ GovFooter.js
-│  │  ├─ GovHeader.js
-│  │  ├─ LocationPickerMap.js
-│  │  ├─ ManifestArchiveModal.js
-│  │  ├─ Navbar.js
-│  │  ├─ OfficerManifestArchiveModal.js
-│  │  ├─ RiskEngineSync.js
-│  │  └─ TransitManifestModal.js
-│  ├─ middleware.js
+│  │  │  └─ NationalEmblem.js       # Statutory Indian emblem vector components
+│  │  ├─ GisMap.js                  # Core Leaflet vector cartography & corridor renderer
+│  │  ├─ GovBanner.js               # Statutory institutional government header banner
+│  │  ├─ GovFooter.js               # Standard institutional footer & compliance notes
+│  │  ├─ GovHeader.js               # Ministry navigation & accessibility bar
+│  │  ├─ LocationPickerMap.js       # Geotagged coordinate selection modal
+│  │  ├─ ManifestArchiveModal.js    # Historical transit pass record explorer
+│  │  ├─ Navbar.js                  # Role-based portal navigation & live telemetry status
+│  │  ├─ OfficerManifestArchiveModal.js # Field officer transit slip inspection modal
+│  │  ├─ RiskEngineSync.js          # Real-time WebSocket / CDC threat sync listener
+│  │  └─ TransitManifestModal.js    # Dynamic SVG cryptographic pass generator
+│  ├─ middleware.js                 # Next.js edge route protection & RBAC guards
 │  └─ utils
-│     ├─ audioAlert.js
-│     ├─ auth.js
-│     ├─ offlineQueue.js
-│     └─ supabase.js
-└─ tailwind.config.js
+│     ├─ audioAlert.js              # Critical incident acoustic notification handler
+│     ├─ auth.js                   # Client auth session validation & token helpers
+│     ├─ offlineQueue.js           # IndexedDB / localStorage offline action queue
+│     └─ supabase.js               # Supabase client instantiation & CDC channels
+└─ tailwind.config.js               # Tailwind design system & theme tokens
 
 ```
 
 ---
 
 ## 🚀 Quickstart & Local Setup
-1. Prerequisites
-Node.js >= 18.18.0
 
-npm / pnpm / yarn
+### 1. Prerequisites
 
-Supabase project with PostGIS extension enabled
+* Node.js `>= 18.18.0`
+* npm / pnpm / yarn
+* Supabase project with PostGIS extension enabled
 
-2. Clone and Install
-Bash
+### 2. Clone and Install
+
+```bash
 git clone [https://github.com/sohampycode-hub/setu-ner.git](https://github.com/sohampycode-hub/setu-ner.git)
 cd setu-ner
 npm install
-3. Environment Configuration
-Create a .env.local file in the root directory:
 
-```text
+```
 
-Bash
+### 3. Environment Configuration
+
+Create a `.env.local` file in the root directory:
+
+```bash
 cp .env.example .env.local
+
+```
+
 Fill in your credentials:
 
-Code snippet
+```env
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
 
 ```
 
-4. Database Setup & Migrations
-Run the SQL migration in supabase/migrations/ inside your Supabase SQL editor to initialize tables, PostGIS indexes, and real-time CDC channels.
+### 4. Database Setup & Migrations
 
-5. Start the Development Server
-Bash
+Run the SQL migrations inside your Supabase SQL editor to initialize tables, PostGIS indexes, and real-time CDC channels.
+
+### 5. Start the Development Server
+
+```bash
 npm run dev
-Open http://localhost:3000 in your browser.
 
-🔒 Security & Data Governance
-Role-Based Access Control (RBAC): Supabase Row-Level Security (RLS) protects write endpoints across Field Patrol, DLO, and Ministry Apex desks.
+```
 
-Cryptographic Tamper-Resistance: Verification tokens are generated using dynamic cryptographic hashing, verifiable without administrative exposure at checkpoints.
-
-Zero Vendor Lock-in: Built entirely on open GIS standards (PostGIS, GeoJSON, OSM Overpass), saving institutional expenditure compared to proprietary commercial licenses[cite: 2].
-
-👥 Development Team (Team LogixHub)
-Institution: Maulana Abul Kalam Azad University of Technology (MAKAUT), West Bengal
-
-Production URL: https://setu-ner.vercel.app/
-
-📄 License
-This project is licensed under the MIT License — see the LICENSE file for details.
-
+Open [http://localhost:3000](http://localhost:3000?utm_source=gemini) in your browser.
 
 ---
+
+## 🔒 Security & Data Governance
+
+* **Role-Based Access Control (RBAC):** Middleware and Supabase Row-Level Security (RLS) protect write endpoints across Field Patrol, DLO, and Ministry Apex desks.
+* **Cryptographic Tamper-Resistance:** Verification tokens are generated using dynamic cryptographic hashing, verifiable without administrative exposure at checkpoints.
+* **Zero Vendor Lock-in:** Built entirely on open GIS standards (PostGIS, GeoJSON, OSM Overpass), eliminating recurring proprietary licensing fees.
+
+---
+
+## 👥 Development Team (Team LogixHub)
+
+* **Institution:** Maulana Abul Kalam Azad University of Technology (MAKAUT), West Bengal
+* **Track:** Smart India Hackathon (SIH) 2026 — Transportation & Logistics (Software)
+* **Production URL:** [https://setu-ner.vercel.app/](https://setu-ner.vercel.app/?utm_source=gemini)
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License — see the [LICENSE](https://www.google.com/search?q=LICENSE&utm_source=gemini) file for details.
+
+```
